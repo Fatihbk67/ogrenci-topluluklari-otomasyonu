@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kullanıcı Yönetimi | Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+<style>
+  /* DataTables varsayılan görünümünü panel tasarımına uydur */
+  .dataTables_wrapper { font-family: var(--font-govde); }
+  .dataTables_wrapper .dataTables_filter,
+  .dataTables_wrapper .dataTables_length { display: none; } /* kendi arama/filtre kutumuzu kullanıyoruz */
+  .dataTables_wrapper .dataTables_info { font-size: 12.5px; color: var(--renk-metin-soluk); padding-top: 12px; }
+  .dataTables_wrapper .dataTables_paginate { padding-top: 12px; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 4px 10px; margin-left: 4px; border-radius: 6px; font-size: 12.5px;
+    border: 1px solid var(--renk-kenar) !important; background: var(--renk-yuzey) !important; color: var(--renk-metin) !important;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--renk-lacivert) !important; color: #fff !important; border-color: var(--renk-lacivert) !important;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.disabled { opacity: .4; }
+  table.veri-tablo.dataTable thead th { position: relative; }
+</style>
+</head>
+<body>
+
+<div class="duzen">
+
+  <aside class="kenar-cubugu">
+    <div class="kc-ust-satir">
+      <div class="kc-marka">
+        <div class="kc-logo"><img src="../assets/mtu-logo.png" alt="Malatya Turgut Özal Üniversitesi Logosu"></div>
+        <div class="kc-marka-metin">
+          <div class="kc-marka-baslik">Topluluk Otomasyonu</div>
+          <div class="kc-marka-alt">Yönetici Paneli</div>
+        </div>
+      </div>
+      <button class="kc-daralt-btn" id="kcDaraltBtn" title="Menüyü daralt / genişlet">&#9776;</button>
+    </div>
+
+    <ul class="kc-menu">
+      <li><a href="dashboard.html" data-sayfa="dashboard"><span class="ikon">&#9632;</span><span>Kontrol Paneli</span></a></li>
+      <li><a href="kullanicilar.html" data-sayfa="kullanicilar"><span class="ikon">&#128100;</span><span>Kullanıcılar</span></a></li>
+      <li><a href="topluluklar.html" data-sayfa="topluluklar"><span class="ikon">&#127970;</span><span>Topluluklar</span></a></li>
+      <li><a href="etkinlikler.html" data-sayfa="etkinlikler"><span class="ikon">&#128197;</span><span>Etkinlikler</span></a></li>
+      <li><a href="log-kayitlari.html" data-sayfa="log-kayitlari"><span class="ikon">&#128203;</span><span>Log Kaydı</span></a></li>
+    </ul>
+
+    <div class="kc-alt">
+      <div class="kc-kullanici">Hoş geldiniz,<strong id="kcKullaniciAdi">Yönetici</strong></div>
+      <button class="kc-cikis" id="kcCikisBtn"><span class="ikon-cikis">&#9211;</span><span class="metin">Çıkış Yap</span></button>
+    </div>
+  </aside>
+
+  <main class="ana-icerik">
+    <div class="kimlik-bar">
+      <div class="kimlik-sol">
+        <div class="kimlik-avatar" id="kimlikAvatar">--</div>
+        <div class="kimlik-metin">
+          <div class="kimlik-selamlama">Hoş geldiniz</div>
+          <div class="kimlik-ad" id="kimlikAd">Yönetici</div>
+        </div>
+      </div>
+      <span class="kimlik-rol-etiket" id="kimlikRol">Yönetici Paneli</span>
+    </div>
+
+    <div class="sayfa-baslik-satiri">
+      <div>
+        <h1 class="sayfa-baslik">Kullanıcı Yönetimi</h1>
+        <p class="sayfa-alt-baslik">Kayıtlı kullanıcıları görüntüleyin, rollerini düzenleyin veya hesaplarını silin. Yeni kullanıcılar giriş ekranından kendileri kayıt olur.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="arac-cubugu">
+        <input type="text" id="aramaKutusu" placeholder="Ad, soyad, e-posta veya öğrenci no ile ara...">
+        <select id="rolFiltre">
+          <option value="">Tüm Roller</option>
+          <option value="admin">Admin</option>
+          <option value="danisman">Danışman</option>
+          <option value="baskan">Topluluk Başkanı</option>
+          <option value="ogrenci">Öğrenci</option>
+        </select>
+      </div>
+
+      <div class="tablo-sarici">
+        <table class="veri-tablo" id="kullanicilarTablosu">
+          <thead>
+            <tr>
+              <th>Ad Soyad</th><th>E-posta</th><th>Öğrenci No</th><th>Rol</th><th>Bölüm</th><th>Durum</th><th>İşlemler</th>
+            </tr>
+          </thead>
+          <tbody id="kullanicilarGovde">
+            <tr class="bos-satir"><td colspan="7">Yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<!-- KULLANICI DÜZENLE MODAL -->
+<div class="modal-arka" id="kullaniciModal">
+  <div class="modal-kutu">
+    <div class="modal-baslik-satiri">
+      <h3 class="modal-baslik">Kullanıcıyı Düzenle</h3>
+      <button class="modal-kapat" id="modalKapatBtn">&times;</button>
+    </div>
+
+    <form id="kullaniciForm">
+      <input type="hidden" id="kullaniciId">
+
+      <div class="form-cift">
+        <div class="form-satir">
+          <label for="ad">Ad</label>
+          <input type="text" id="ad" required>
+        </div>
+        <div class="form-satir">
+          <label for="soyad">Soyad</label>
+          <input type="text" id="soyad" required>
+        </div>
+      </div>
+
+      <div class="form-satir">
+        <label for="email">E-posta</label>
+        <input type="email" id="email" required>
+      </div>
+
+      <div class="form-satir">
+        <label for="sifre">Şifre</label>
+        <input type="password" id="sifre" placeholder="Değiştirmek istemiyorsanız boş bırakın">
+        <div class="form-ipucu">En az 6 karakter olmalıdır. Boş bırakırsanız mevcut şifre korunur.</div>
+      </div>
+
+      <div class="form-cift">
+        <div class="form-satir">
+          <label for="rol">Rol</label>
+          <select id="rol" required>
+            <option value="">Seçiniz</option>
+            <option value="admin">Admin</option>
+            <option value="danisman">Danışman</option>
+            <option value="baskan">Topluluk Başkanı</option>
+            <option value="ogrenci">Öğrenci</option>
+          </select>
+        </div>
+        <div class="form-satir">
+          <label for="ogrenciNo">Öğrenci No</label>
+          <input type="text" id="ogrenciNo" placeholder="Varsa">
+        </div>
+      </div>
+
+      <div class="form-cift">
+        <div class="form-satir">
+          <label for="telefon">Telefon</label>
+          <input type="text" id="telefon" placeholder="0 (5xx) xxx xx xx">
+        </div>
+        <div class="form-satir">
+          <label for="bolum">Bölüm</label>
+          <input type="text" id="bolum" placeholder="Yazılım Mühendisliği">
+        </div>
+      </div>
+
+      <div class="form-satir">
+        <label><input type="checkbox" id="aktif" style="width:auto; margin-right:8px;" checked>Hesap aktif</label>
+      </div>
+
+      <div class="modal-eylemler">
+        <button type="button" class="btn btn-ikincil" id="modalIptalBtn">Vazgeç</button>
+        <button type="submit" class="btn btn-birincil" id="kaydetBtn">Kaydet</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="js/ortak.js"></script>
+<script src="js/kullanicilar.js"></script>
+</body>
+</html>

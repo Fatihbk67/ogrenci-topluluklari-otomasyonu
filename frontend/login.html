@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giriş Yap | Öğrenci Toplulukları Otomasyonu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+  <div class="sayfa">
+
+    <!-- SOL PANEL: Kurumsal kimlik -->
+    <aside class="tanitim-panel">
+      <div class="tanitim-icerik">
+        <div class="rozet-logo"><img src="assets/mtu-logo.png" alt="Malatya Turgut Özal Üniversitesi Logosu"></div>
+        <h1 class="tanitim-baslik">Öğrenci Toplulukları<br>Otomasyon Sistemi</h1>
+        <p class="tanitim-aciklama">
+          Malatya Turgut Özal Üniversitesi bünyesindeki tüm öğrenci topluluklarının
+          üyelik, etkinlik ve yönetim süreçlerini tek bir çatı altında toplayan
+          dijital platform.
+        </p>
+        <ul class="tanitim-liste">
+          <li><span class="nokta"></span> Topluluk başvuru ve onay süreçleri</li>
+          <li><span class="nokta"></span> Etkinlik planlama ve takibi</li>
+          <li><span class="nokta"></span> Üyelik ve danışmanlık yönetimi</li>
+        </ul>
+      </div>
+      <div class="tanitim-alt-cizgi"></div>
+    </aside>
+
+    <!-- SAĞ PANEL: Giriş / Kayıt formu -->
+    <main class="form-panel">
+      <div class="form-kutu">
+
+        <!-- SEKME GEÇİŞİ -->
+        <div class="sekme-satiri" role="tablist">
+          <button type="button" class="sekme-btn aktif" id="girisSekmeBtn" role="tab" aria-selected="true">Giriş Yap</button>
+          <button type="button" class="sekme-btn" id="kayitSekmeBtn" role="tab" aria-selected="false">Hesap Oluştur</button>
+        </div>
+
+        <!-- ============ GİRİŞ FORMU ============ -->
+        <div id="girisPaneli">
+          <h2 class="form-baslik">Giriş Yap</h2>
+          <p class="form-alt-baslik">Devam etmek için hesap bilgilerinizle oturum açın.</p>
+
+          <form id="girisFormu" novalidate>
+            <div class="alan-grubu">
+              <label for="girisEmail">Üniversite E-postası</label>
+              <input type="email" id="girisEmail" name="email" placeholder="ornek@ogr.mtu.edu.tr" required autocomplete="username">
+            </div>
+
+            <div class="alan-grubu">
+              <label for="girisSifre">Şifre</label>
+              <div class="sifre-kapsayici">
+                <input type="password" id="girisSifre" name="sifre" placeholder="••••••••" required autocomplete="current-password">
+                <button type="button" class="sifre-goster" data-hedef="girisSifre" aria-label="Şifreyi göster">Göster</button>
+              </div>
+            </div>
+
+            <button type="button" class="sifremi-unuttum-link" id="sifremiUnuttumBtn">Şifremi unuttum?</button>
+
+            <div id="girisHata" class="hata-mesaji" role="alert" hidden></div>
+
+            <button type="submit" class="giris-btn" id="girisBtn">
+              <span id="girisBtnMetin">Giriş Yap</span>
+            </button>
+          </form>
+
+          <p class="alt-not">
+            Hesabınız yok mu? <a href="#" id="kayitaGecBtn" class="baglanti">Hemen kayıt olun</a>
+          </p>
+        </div>
+
+        <!-- ============ KAYIT FORMU ============ -->
+        <div id="kayitPaneli" hidden>
+          <h2 class="form-baslik">Hesap Oluştur</h2>
+          <p class="form-alt-baslik">Kayıt olan herkes öğrenci hesabıyla başlar. Topluluk başkanlığı veya danışmanlık gibi yetkiler yönetici tarafından sonradan tanımlanır.</p>
+
+          <form id="kayitFormu" novalidate>
+            <div class="alan-cift">
+              <div class="alan-grubu">
+                <label for="kayitAd">Ad</label>
+                <input type="text" id="kayitAd" required>
+              </div>
+              <div class="alan-grubu">
+                <label for="kayitSoyad">Soyad</label>
+                <input type="text" id="kayitSoyad" required>
+              </div>
+            </div>
+
+            <div class="alan-grubu">
+              <label for="kayitEmail">Üniversite E-postası</label>
+              <input type="email" id="kayitEmail" placeholder="ornek@ogr.mtu.edu.tr" required>
+            </div>
+
+            <div class="alan-grubu">
+              <label for="kayitOgrenciNo">Öğrenci No <span class="opsiyonel">(opsiyonel)</span></label>
+              <input type="text" id="kayitOgrenciNo" placeholder="2021123456">
+            </div>
+
+            <div class="alan-grubu">
+              <label for="kayitBolum">Bölüm <span class="opsiyonel">(opsiyonel)</span></label>
+              <input type="text" id="kayitBolum" placeholder="Yazılım Mühendisliği">
+            </div>
+
+            <div class="alan-grubu">
+              <label for="kayitSifre">Şifre</label>
+              <div class="sifre-kapsayici">
+                <input type="password" id="kayitSifre" placeholder="En az 6 karakter" required autocomplete="new-password">
+                <button type="button" class="sifre-goster" data-hedef="kayitSifre" aria-label="Şifreyi göster">Göster</button>
+              </div>
+            </div>
+
+            <div class="alan-grubu">
+              <label for="kayitSifreTekrar">Şifre (Tekrar)</label>
+              <div class="sifre-kapsayici">
+                <input type="password" id="kayitSifreTekrar" placeholder="Şifrenizi tekrar girin" required autocomplete="new-password">
+                <button type="button" class="sifre-goster" data-hedef="kayitSifreTekrar" aria-label="Şifreyi göster">Göster</button>
+              </div>
+            </div>
+
+            <div id="kayitHata" class="hata-mesaji" role="alert" hidden></div>
+
+            <button type="submit" class="giris-btn" id="kayitBtn">
+              <span id="kayitBtnMetin">Hesap Oluştur</span>
+            </button>
+          </form>
+
+          <p class="alt-not">
+            Zaten hesabınız var mı? <a href="#" id="girisaGecBtn" class="baglanti">Giriş yapın</a>
+          </p>
+        </div>
+
+        <!-- ============ ŞİFREMİ UNUTTUM (3 ADIM) ============ -->
+        <div id="sifirlamaPaneli" hidden>
+
+          <div class="adim-noktalari">
+            <span class="nokta" id="nokta1"></span>
+            <span class="nokta" id="nokta2"></span>
+            <span class="nokta" id="nokta3"></span>
+          </div>
+
+          <!-- Adım 1: E-posta gir -->
+          <div id="sifirlamaAdim1">
+            <button type="button" class="geri-link" id="adim1GeriBtn">&larr; Giriş ekranına dön</button>
+            <h2 class="form-baslik">Şifremi Unuttum</h2>
+            <p class="form-alt-baslik">Hesabınıza kayıtlı üniversite e-posta adresinizi girin, size 6 haneli bir doğrulama kodu gönderelim.</p>
+
+            <form id="adim1Formu" novalidate>
+              <div class="alan-grubu">
+                <label for="sifirlamaEmail">Üniversite E-postası</label>
+                <input type="email" id="sifirlamaEmail" placeholder="ornek@ogr.mtu.edu.tr" required autocomplete="username">
+              </div>
+
+              <div id="adim1Hata" class="hata-mesaji" role="alert" hidden></div>
+
+              <button type="submit" class="giris-btn" id="adim1Btn">
+                <span id="adim1BtnMetin">Doğrulama Kodu Gönder</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Adım 2: Kodu doğrula -->
+          <div id="sifirlamaAdim2" hidden>
+            <button type="button" class="geri-link" id="adim2GeriBtn">&larr; E-posta adresini değiştir</button>
+            <h2 class="form-baslik">Kodu Doğrulayın</h2>
+            <p class="form-alt-baslik" id="adim2AltBaslik">E-posta adresinize gönderilen 6 haneli kodu girin.</p>
+
+            <div id="adim2TestModu" class="test-modu-kutu" hidden></div>
+
+            <form id="adim2Formu" novalidate>
+              <div class="alan-grubu">
+                <label for="sifirlamaKod">Doğrulama Kodu</label>
+                <input type="text" id="sifirlamaKod" class="kod-input" inputmode="numeric" maxlength="6" placeholder="••••••" required autocomplete="one-time-code">
+              </div>
+
+              <div id="adim2Hata" class="hata-mesaji" role="alert" hidden></div>
+
+              <button type="submit" class="giris-btn" id="adim2Btn">
+                <span id="adim2BtnMetin">Kodu Doğrula</span>
+              </button>
+            </form>
+
+            <p class="tekrar-gonder-satiri">Kod gelmedi mi? <a href="#" id="kodTekrarGonderBtn" class="baglanti">Tekrar gönder</a></p>
+          </div>
+
+          <!-- Adım 3: Yeni şifre belirle -->
+          <div id="sifirlamaAdim3" hidden>
+            <h2 class="form-baslik">Yeni Şifre Belirleyin</h2>
+            <p class="form-alt-baslik">Kimliğiniz doğrulandı. Şimdi hesabınız için yeni bir şifre belirleyin.</p>
+
+            <form id="adim3Formu" novalidate>
+              <div class="alan-grubu">
+                <label for="yeniSifre">Yeni Şifre</label>
+                <div class="sifre-kapsayici">
+                  <input type="password" id="yeniSifre" placeholder="En az 6 karakter" required autocomplete="new-password">
+                  <button type="button" class="sifre-goster" data-hedef="yeniSifre" aria-label="Şifreyi göster">Göster</button>
+                </div>
+              </div>
+
+              <div class="alan-grubu">
+                <label for="yeniSifreTekrar">Yeni Şifre (Tekrar)</label>
+                <div class="sifre-kapsayici">
+                  <input type="password" id="yeniSifreTekrar" placeholder="Şifrenizi tekrar girin" required autocomplete="new-password">
+                  <button type="button" class="sifre-goster" data-hedef="yeniSifreTekrar" aria-label="Şifreyi göster">Göster</button>
+                </div>
+              </div>
+
+              <div id="adim3Hata" class="hata-mesaji" role="alert" hidden></div>
+              <div id="adim3Basari" class="basari-mesaji" role="status" hidden></div>
+
+              <button type="submit" class="giris-btn" id="adim3Btn">
+                <span id="adim3BtnMetin">Şifreyi Güncelle</span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+<script src="js/login.js"></script>
+</body>
+</html>

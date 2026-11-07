@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Üyelik Başvuruları | Topluluk Başkanı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/baskan.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+<style>
+  .dataTables_wrapper { font-family: var(--font-govde); }
+  .dataTables_wrapper .dataTables_filter,
+  .dataTables_wrapper .dataTables_length { display: none; }
+  .dataTables_wrapper .dataTables_info { font-size: 12.5px; color: var(--renk-metin-soluk); padding-top: 12px; }
+  .dataTables_wrapper .dataTables_paginate { padding-top: 12px; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 4px 10px; margin-left: 4px; border-radius: 6px; font-size: 12.5px;
+    border: 1px solid var(--renk-kenar) !important; background: var(--renk-yuzey) !important; color: var(--renk-metin) !important;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--renk-lacivert) !important; color: #fff !important; border-color: var(--renk-lacivert) !important;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.disabled { opacity: .4; }
+</style>
+</head>
+<body>
+
+<div class="duzen">
+
+  <aside class="kenar-cubugu">
+    <div class="kc-ust-satir">
+      <div class="kc-marka">
+        <div class="kc-logo"><img src="../assets/mtu-logo.png" alt="Malatya Turgut Özal Üniversitesi Logosu"></div>
+        <div class="kc-marka-metin">
+          <div class="kc-marka-baslik">Topluluk Otomasyonu</div>
+          <div class="kc-marka-alt">Başkan Paneli</div>
+        </div>
+      </div>
+      <button class="kc-daralt-btn" id="kcDaraltBtn" title="Menüyü daralt / genişlet">&#9776;</button>
+    </div>
+
+    <ul class="kc-menu">
+      <li><a href="dashboard.html" data-sayfa="dashboard"><span class="ikon">&#9632;</span><span>Kontrol Paneli</span></a></li>
+      <li><a href="uyeler.html" data-sayfa="uyeler"><span class="ikon">&#128101;</span><span>Üyelik Başvuruları</span></a></li>
+      <li><a href="etkinlikler.html" data-sayfa="etkinlikler"><span class="ikon">&#128197;</span><span>Etkinliklerim</span></a></li>
+      <li><a href="topluluk-profili.html" data-sayfa="topluluk-profili"><span class="ikon">&#128196;</span><span>Topluluk Profilim</span></a></li>
+    </ul>
+
+    <div class="kc-alt">
+      <div class="kc-kullanici">Hoş geldiniz,<strong id="kcKullaniciAdi">Başkan</strong></div>
+      <button class="kc-cikis" id="kcCikisBtn"><span class="ikon-cikis">&#9211;</span><span class="metin">Çıkış Yap</span></button>
+    </div>
+  </aside>
+
+  <main class="ana-icerik">
+    <div class="sayfa-baslik-satiri">
+      <div>
+        <h1 class="sayfa-baslik">Üyelik Başvuruları</h1>
+        <p class="sayfa-alt-baslik">Topluluğunuza yapılan üyelik başvurularını onaylayın veya reddedin.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="arac-cubugu">
+        <select id="durumFiltre">
+          <option value="">Tüm Durumlar</option>
+          <option value="beklemede">Beklemede</option>
+          <option value="onaylandi">Onaylı Üyeler</option>
+          <option value="reddedildi">Reddedildi</option>
+          <option value="ayrildi">Ayrıldı</option>
+        </select>
+      </div>
+
+      <div class="tablo-sarici">
+        <table class="veri-tablo" id="uyelerTablosu">
+          <thead>
+            <tr>
+              <th>Öğrenci</th><th>E-posta</th><th>Öğrenci No</th><th>Bölüm</th><th>Durum</th><th>Başvuru Tarihi</th><th>İşlemler</th>
+            </tr>
+          </thead>
+          <tbody id="uyelerGovde">
+            <tr class="bos-satir"><td colspan="7">Yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="js/ortak.js"></script>
+<script src="js/uyeler.js"></script>
+</body>
+</html>

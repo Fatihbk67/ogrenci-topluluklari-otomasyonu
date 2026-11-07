@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etkinlik Yönetimi | Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="duzen">
+
+  <aside class="kenar-cubugu">
+    <div class="kc-ust-satir">
+      <div class="kc-marka">
+        <div class="kc-logo"><img src="../assets/mtu-logo.png" alt="Malatya Turgut Özal Üniversitesi Logosu"></div>
+        <div class="kc-marka-metin">
+          <div class="kc-marka-baslik">Topluluk Otomasyonu</div>
+          <div class="kc-marka-alt">Yönetici Paneli</div>
+        </div>
+      </div>
+      <button class="kc-daralt-btn" id="kcDaraltBtn" title="Menüyü daralt / genişlet">&#9776;</button>
+    </div>
+
+    <ul class="kc-menu">
+      <li><a href="dashboard.html" data-sayfa="dashboard"><span class="ikon">&#9632;</span><span>Kontrol Paneli</span></a></li>
+      <li><a href="kullanicilar.html" data-sayfa="kullanicilar"><span class="ikon">&#128100;</span><span>Kullanıcılar</span></a></li>
+      <li><a href="topluluklar.html" data-sayfa="topluluklar"><span class="ikon">&#127970;</span><span>Topluluklar</span></a></li>
+      <li><a href="etkinlikler.html" data-sayfa="etkinlikler"><span class="ikon">&#128197;</span><span>Etkinlikler</span></a></li>
+      <li><a href="log-kayitlari.html" data-sayfa="log-kayitlari"><span class="ikon">&#128203;</span><span>Log Kaydı</span></a></li>
+    </ul>
+
+    <div class="kc-alt">
+      <div class="kc-kullanici">Hoş geldiniz,<strong id="kcKullaniciAdi">Yönetici</strong></div>
+      <button class="kc-cikis" id="kcCikisBtn"><span class="ikon-cikis">&#9211;</span><span class="metin">Çıkış Yap</span></button>
+    </div>
+  </aside>
+
+  <main class="ana-icerik">
+    <div class="kimlik-bar">
+      <div class="kimlik-sol">
+        <div class="kimlik-avatar" id="kimlikAvatar">--</div>
+        <div class="kimlik-metin">
+          <div class="kimlik-selamlama">Hoş geldiniz</div>
+          <div class="kimlik-ad" id="kimlikAd">Yönetici</div>
+        </div>
+      </div>
+      <span class="kimlik-rol-etiket" id="kimlikRol">Yönetici Paneli</span>
+    </div>
+
+    <div class="sayfa-baslik-satiri">
+      <div>
+        <h1 class="sayfa-baslik">Etkinlik Yönetimi</h1>
+        <p class="sayfa-alt-baslik">Topluluk etkinliklerini görüntüleyin, onaylayın veya reddedin.</p>
+      </div>
+      <button class="btn btn-birincil" id="yeniEtkinlikBtn">+ Yeni Etkinlik</button>
+    </div>
+
+    <div class="panel">
+      <div class="arac-cubugu">
+        <select id="durumFiltre">
+          <option value="">Tüm Durumlar</option>
+          <option value="beklemede">Beklemede</option>
+          <option value="onaylandi">Onaylandı</option>
+          <option value="reddedildi">Reddedildi</option>
+          <option value="tamamlandi">Tamamlandı</option>
+          <option value="iptal">İptal Edildi</option>
+        </select>
+        <select id="topluluqFiltre">
+          <option value="">Tüm Topluluklar</option>
+        </select>
+      </div>
+
+      <div class="tablo-sarici">
+        <table class="veri-tablo">
+          <thead>
+            <tr>
+              <th>Etkinlik</th><th>Topluluk</th><th>Tarih</th><th>Konum</th><th>Durum</th><th>İşlemler</th>
+            </tr>
+          </thead>
+          <tbody id="etkinliklerGovde">
+            <tr class="bos-satir"><td colspan="6">Yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<!-- ETKİNLİK EKLE/DÜZENLE MODAL -->
+<div class="modal-arka" id="etkinlikModal">
+  <div class="modal-kutu">
+    <div class="modal-baslik-satiri">
+      <h3 class="modal-baslik" id="modalBaslik">Yeni Etkinlik</h3>
+      <button class="modal-kapat" id="modalKapatBtn">&times;</button>
+    </div>
+
+    <form id="etkinlikForm">
+      <input type="hidden" id="etkinlikId">
+
+      <div class="form-satir">
+        <label for="topluluqSecim">Topluluk</label>
+        <select id="topluluqSecim" required><option value="">Seçiniz</option></select>
+      </div>
+
+      <div class="form-satir">
+        <label for="baslik">Etkinlik Başlığı</label>
+        <input type="text" id="baslik" required>
+      </div>
+
+      <div class="form-satir">
+        <label for="aciklama">Açıklama</label>
+        <textarea id="aciklama" rows="3" placeholder="Etkinlik hakkında kısa bilgi"></textarea>
+      </div>
+
+      <div class="form-cift">
+        <div class="form-satir">
+          <label for="tarih">Tarih ve Saat</label>
+          <input type="datetime-local" id="tarih" required>
+        </div>
+        <div class="form-satir">
+          <label for="konum">Konum</label>
+          <input type="text" id="konum" placeholder="Örn: Konferans Salonu">
+        </div>
+      </div>
+
+      <div class="modal-eylemler">
+        <button type="button" class="btn btn-ikincil" id="modalIptalBtn">Vazgeç</button>
+        <button type="submit" class="btn btn-birincil" id="kaydetBtn">Kaydet</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/ortak.js"></script>
+<script src="js/etkinlikler.js"></script>
+</body>
+</html>

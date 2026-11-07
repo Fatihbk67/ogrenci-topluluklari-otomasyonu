@@ -1,0 +1,18 @@
+# Bağımlılıklar
+node_modules/
+
+# Gizli bilgiler (veritabanı, JWT ve SMTP şifreleri) — asla depoya eklenmez
+.env
+*.env
+!.env.example
+
+# Çalışma zamanında yüklenen dosyalar
+backend/uploads/
+
+# Sistem / editör dosyaları
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.log

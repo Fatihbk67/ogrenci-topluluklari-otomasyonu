@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topluluk Profilim | Topluluk Başkanı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/baskan.css">
+<style>
+  .profil-duzen { display: grid; grid-template-columns: 300px 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 900px) { .profil-duzen { grid-template-columns: 1fr; } }
+
+  .gorsel-kutu {
+    border: 1.5px dashed var(--renk-kenar);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    background: var(--renk-zemin);
+  }
+  .gorsel-onizleme {
+    width: 100%;
+    aspect-ratio: 16/10;
+    border-radius: 10px;
+    background: #EEF1F5 center/cover no-repeat;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--renk-metin-soluk);
+    font-size: 13px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid var(--renk-kenar);
+  }
+  .gorsel-onizleme img { width: 100%; height: 100%; object-fit: cover; }
+  .gorsel-ipucu { font-size: 11.5px; color: var(--renk-metin-soluk); margin-top: 8px; line-height: 1.6; }
+
+  textarea#detayBilgi { min-height: 180px; resize: vertical; }
+</style>
+</head>
+<body>
+
+<div class="duzen">
+
+  <aside class="kenar-cubugu">
+    <div class="kc-ust-satir">
+      <div class="kc-marka">
+        <div class="kc-logo"><img src="../assets/mtu-logo.png" alt="Malatya Turgut Özal Üniversitesi Logosu"></div>
+        <div class="kc-marka-metin">
+          <div class="kc-marka-baslik">Topluluk Otomasyonu</div>
+          <div class="kc-marka-alt">Başkan Paneli</div>
+        </div>
+      </div>
+      <button class="kc-daralt-btn" id="kcDaraltBtn" title="Menüyü daralt / genişlet">&#9776;</button>
+    </div>
+
+    <ul class="kc-menu">
+      <li><a href="dashboard.html" data-sayfa="dashboard"><span class="ikon">&#9632;</span><span>Kontrol Paneli</span></a></li>
+      <li><a href="uyeler.html" data-sayfa="uyeler"><span class="ikon">&#128101;</span><span>Üyelik Başvuruları</span></a></li>
+      <li><a href="etkinlikler.html" data-sayfa="etkinlikler"><span class="ikon">&#128197;</span><span>Etkinliklerim</span></a></li>
+      <li><a href="topluluk-profili.html" data-sayfa="topluluk-profili"><span class="ikon">&#128196;</span><span>Topluluk Profilim</span></a></li>
+    </ul>
+
+    <div class="kc-alt">
+      <div class="kc-kullanici">Hoş geldiniz,<strong id="kcKullaniciAdi">Başkan</strong></div>
+      <button class="kc-cikis" id="kcCikisBtn"><span class="ikon-cikis">&#9211;</span><span class="metin">Çıkış Yap</span></button>
+    </div>
+  </aside>
+
+  <main class="ana-icerik">
+    <div class="sayfa-baslik-satiri">
+      <div>
+        <h1 class="sayfa-baslik" id="sayfaBaslik">Topluluk Profilim</h1>
+        <p class="sayfa-alt-baslik">Topluluğunuzu tanıtan görsel ve detaylı bilgileri girin. Bu bilgiler, öğrencilerin gördüğü topluluk kartında görüntülenir.</p>
+      </div>
+    </div>
+
+    <div class="profil-duzen">
+
+      <!-- GÖRSEL YÜKLEME -->
+      <div class="panel gorsel-kutu">
+        <h2 class="panel-baslik" style="text-align:left;">Topluluk Görseli</h2>
+        <div class="gorsel-onizleme" id="gorselOnizleme">Görsel yok</div>
+        <input type="file" id="gorselInput" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none;">
+        <button type="button" class="btn btn-ikincil" id="gorselSecBtn" style="width:100%;">Görsel Seç</button>
+        <button type="button" class="btn btn-birincil" id="gorselYukleBtn" style="width:100%; margin-top:8px; display:none;">Görseli Yükle</button>
+        <div class="gorsel-ipucu">JPG, PNG, WEBP veya GIF · maksimum 5MB.<br>Bu görsel, öğrenci panelindeki topluluk kartında büyük boyutta gösterilir.</div>
+      </div>
+
+      <!-- DETAYLI BİLGİ FORMU -->
+      <div class="panel">
+        <h2 class="panel-baslik">Detaylı Bilgiler</h2>
+        <form id="profilForm">
+          <div class="form-satir">
+            <label for="aciklama">Kısa Açıklama</label>
+            <textarea id="aciklama" rows="2" placeholder="Topluluk kartında görünen kısa özet (1-2 cümle)"></textarea>
+          </div>
+
+          <div class="form-satir">
+            <label for="detayBilgi">Detaylı Bilgi</label>
+            <textarea id="detayBilgi" placeholder="Topluluğun amacı, faaliyet alanları, düzenlenen etkinlik türleri, katılım koşulları vb. detaylı bilgileri buraya yazabilirsiniz."></textarea>
+            <div class="form-ipucu">Bu metin, öğrenci kartına tıkladığında açılan genişletilmiş alanda gösterilir.</div>
+          </div>
+
+          <div class="form-cift">
+            <div class="form-satir">
+              <label for="iletisimBilgisi">İletişim Bilgisi</label>
+              <input type="text" id="iletisimBilgisi" placeholder="ornek@mtu.edu.tr veya telefon">
+            </div>
+            <div class="form-satir">
+              <label for="sosyalMedya">Sosyal Medya / Web Sitesi</label>
+              <input type="text" id="sosyalMedya" placeholder="instagram.com/toplulugunuz">
+            </div>
+          </div>
+
+          <div class="modal-eylemler" style="justify-content:flex-start;">
+            <button type="submit" class="btn btn-birincil" id="kaydetBtn">Kaydet</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="js/ortak.js"></script>
+<script src="js/topluluk-profili.js"></script>
+</body>
+</html>

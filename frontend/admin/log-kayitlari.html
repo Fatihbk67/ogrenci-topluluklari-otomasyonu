@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log Kaydı | Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+<style>
+  .dataTables_wrapper { font-family: var(--font-govde); }
+  .dataTables_wrapper .dataTables_filter,
+  .dataTables_wrapper .dataTables_length { display: none; }
+  .dataTables_wrapper .dataTables_info { font-size: 12.5px; color: var(--renk-metin-soluk); padding-top: 12px; }
+  .dataTables_wrapper .dataTables_paginate { padding-top: 12px; }
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 4px 10px; margin-left: 4px; border-radius: 6px; font-size: 12.5px;
+    border: 1px solid var(--renk-kenar) !important; background: var(--renk-yuzey) !important; color: var(--renk-metin) !important;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: var(--renk-lacivert) !important; color: #fff !important; border-color: var(--renk-lacivert) !important;
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button.disabled { opacity: .4; }
+  table.veri-tablo.dataTable thead th { position: relative; }
+
+  /* Log sayfasına özel görünüm ayarları */
+  .arac-cubugu.log-arac-cubugu { flex-wrap: wrap; gap: 10px; }
+  .arac-cubugu.log-arac-cubugu input,
+  .arac-cubugu.log-arac-cubugu select { min-width: 0; }
+  .arac-cubugu.log-arac-cubugu input[type="date"] {
+    padding: 9px 13px; border: 1.5px solid var(--renk-kenar); border-radius: 8px;
+    font-size: 13px; font-family: var(--font-govde); background: #fff;
+  }
+  .arac-cubugu.log-arac-cubugu input[type="date"]:focus { outline: none; border-color: var(--renk-lacivert-acik); }
+  .lk-tarih-etiket { font-size: 12px; color: var(--renk-metin-soluk); align-self: center; white-space: nowrap; }
+
+  .yontem-etiket {
+    display: inline-block; padding: 2px 8px; border-radius: 5px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.3px; font-family: var(--font-govde);
+  }
+  .yontem-GET    { background: #E8F0FE; color: #1A56DB; }
+  .yontem-POST   { background: #E8F7EE; color: #1E8449; }
+  .yontem-PUT    { background: #FFF4E0; color: #9A6700; }
+  .yontem-PATCH  { background: #F3E8FD; color: #6B21A8; }
+  .yontem-DELETE { background: #FBEAE8; color: #C0392B; }
+
+  .lk-ozet-satiri { display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 16px; }
+  .lk-ozet-kutu { background: var(--renk-yuzey); border: 1px solid var(--renk-kenar); border-radius: 10px; padding: 12px 18px; box-shadow: var(--golge-kart); }
+  .lk-ozet-kutu .sayi { font-family: var(--font-baslik); font-size: 21px; color: var(--renk-lacivert); font-weight: 600; }
+  .lk-ozet-kutu .etiket { font-size: 11.5px; color: var(--renk-metin-soluk); margin-top: 2px; }
+
+  /* ---- Tablo: her zaman genişliğe sığsın, yatay taşma / kaydırma olmasın ---- */
+  #logTablosu { table-layout: fixed; width: 100%; font-size: 12.5px; }
+  #logTablosu th { white-space: normal; line-height: 1.3; padding: 10px 10px; }
+  #logTablosu td { padding: 10px; vertical-align: top; }
+  #logTablosu th:nth-child(1), #logTablosu td:nth-child(1) { width: 11%; }
+  #logTablosu th:nth-child(2), #logTablosu td:nth-child(2) { width: 15%; }
+  #logTablosu th:nth-child(3), #logTablosu td:nth-child(3) { width: 8%; }
+  #logTablosu th:nth-child(4), #logTablosu td:nth-child(4) { width: 7%; }
+  #logTablosu th:nth-child(5), #logTablosu td:nth-child(5) { width: 25%; }
+  #logTablosu th:nth-child(6), #logTablosu td:nth-child(6) { width: 10%; }
+  #logTablosu th:nth-child(7), #logTablosu td:nth-child(7) { width: 12%; }
+  #logTablosu th:nth-child(8), #logTablosu td:nth-child(8) { width: 6%; }
+  #logTablosu th:nth-child(9), #logTablosu td:nth-child(9) { width: 6%; }
+
+  .lk-tarih { white-space: nowrap; color: var(--renk-metin-soluk); font-size: 12px; }
+  .lk-eylem, #logTablosu td:nth-child(2) { word-wrap: break-word; overflow-wrap: break-word; }
+  .lk-alt-metin { color: var(--renk-metin-soluk); font-size: 11px; }
+  .lk-ip { font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lk-tarayici { cursor: help; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lk-sure { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--renk-metin-soluk); }
+</style>
+</head>
+<body>
+
+<div class="duzen">
+
+  <aside class="kenar-cubugu">
+    <div class="kc-ust-satir">
+      <div class="kc-marka">
+        <div class="kc-logo"><img src="../assets/mtu-logo.png" alt="Malatya Turgut Özal Üniversitesi Logosu"></div>
+        <div class="kc-marka-metin">
+          <div class="kc-marka-baslik">Topluluk Otomasyonu</div>
+          <div class="kc-marka-alt">Yönetici Paneli</div>
+        </div>
+      </div>
+      <button class="kc-daralt-btn" id="kcDaraltBtn" title="Menüyü daralt / genişlet">&#9776;</button>
+    </div>
+
+    <ul class="kc-menu">
+      <li><a href="dashboard.html" data-sayfa="dashboard"><span class="ikon">&#9632;</span><span>Kontrol Paneli</span></a></li>
+      <li><a href="kullanicilar.html" data-sayfa="kullanicilar"><span class="ikon">&#128100;</span><span>Kullanıcılar</span></a></li>
+      <li><a href="topluluklar.html" data-sayfa="topluluklar"><span class="ikon">&#127970;</span><span>Topluluklar</span></a></li>
+      <li><a href="etkinlikler.html" data-sayfa="etkinlikler"><span class="ikon">&#128197;</span><span>Etkinlikler</span></a></li>
+      <li><a href="log-kayitlari.html" data-sayfa="log-kayitlari"><span class="ikon">&#128203;</span><span>Log Kaydı</span></a></li>
+    </ul>
+
+    <div class="kc-alt">
+      <div class="kc-kullanici">Hoş geldiniz,<strong id="kcKullaniciAdi">Yönetici</strong></div>
+      <button class="kc-cikis" id="kcCikisBtn"><span class="ikon-cikis">&#9211;</span><span class="metin">Çıkış Yap</span></button>
+    </div>
+  </aside>
+
+  <main class="ana-icerik">
+    <div class="kimlik-bar">
+      <div class="kimlik-sol">
+        <div class="kimlik-avatar" id="kimlikAvatar">--</div>
+        <div class="kimlik-metin">
+          <div class="kimlik-selamlama">Hoş geldiniz</div>
+          <div class="kimlik-ad" id="kimlikAd">Yönetici</div>
+        </div>
+      </div>
+      <span class="kimlik-rol-etiket" id="kimlikRol">Yönetici Paneli</span>
+    </div>
+
+    <div class="sayfa-baslik-satiri">
+      <div>
+        <h1 class="sayfa-baslik">Log Kaydı</h1>
+        <p class="sayfa-alt-baslik">Sistemde gerçekleştirilen tüm işlemlerin denetim günlüğü: kullanıcı, eylem, IP adresi, tarayıcı ve işlem süresi.</p>
+      </div>
+    </div>
+
+    <div class="lk-ozet-satiri">
+      <div class="lk-ozet-kutu"><div class="sayi" id="ozetToplam">-</div><div class="etiket">Toplam Kayıt</div></div>
+      <div class="lk-ozet-kutu"><div class="sayi" id="ozetGosterilen">-</div><div class="etiket">Şu An Listelenen</div></div>
+      <div class="lk-ozet-kutu"><div class="sayi" id="ozetBasarisiz">-</div><div class="etiket">Başarısız İşlem</div></div>
+    </div>
+
+    <div class="panel">
+      <div class="arac-cubugu log-arac-cubugu">
+        <input type="text" id="aramaKutusu" placeholder="Kullanıcı, e-posta, eylem, IP veya yol ile ara...">
+        <select id="rolFiltre">
+          <option value="">Tüm Roller</option>
+          <option value="admin">Admin</option>
+          <option value="danisman">Danışman</option>
+          <option value="baskan">Topluluk Başkanı</option>
+          <option value="ogrenci">Öğrenci</option>
+        </select>
+        <span class="lk-tarih-etiket">Başlangıç:</span>
+        <input type="date" id="baslangicTarihi">
+        <span class="lk-tarih-etiket">Bitiş:</span>
+        <input type="date" id="bitisTarihi">
+        <button type="button" class="btn btn-ikincil btn-kucuk" id="filtreTemizleBtn">Filtreyi Temizle</button>
+        <button type="button" class="btn btn-birincil btn-kucuk" id="yenileBtn">Yenile</button>
+      </div>
+
+      <div class="tablo-sarici">
+        <table class="veri-tablo" id="logTablosu">
+          <thead>
+            <tr>
+              <th>Tarih / Saat</th>
+              <th>Kullanıcı</th>
+              <th>Rol</th>
+              <th>Yöntem</th>
+              <th>Eylem</th>
+              <th>IP Adresi</th>
+              <th>Tarayıcı</th>
+              <th>Süre</th>
+              <th>Durum</th>
+            </tr>
+          </thead>
+          <tbody id="logGovde">
+            <tr class="bos-satir"><td colspan="9">Yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="js/ortak.js"></script>
+<script src="js/log-kayitlari.js"></script>
+</body>
+</html>

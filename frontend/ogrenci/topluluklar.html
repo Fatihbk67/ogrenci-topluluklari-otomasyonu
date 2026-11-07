@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toplulukları Keşfet | Öğrenci</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/ogrenci.css">
+<style>
+  /* Her satırda sabit 3 topluluk, hepsi aynı boyutta */
+  .topluluk-izgara { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-items: start; }
+  @media (max-width: 980px) { .topluluk-izgara { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .topluluk-izgara { grid-template-columns: 1fr; } }
+
+  .topluluk-kart {
+    background: var(--renk-yuzey);
+    border: 1px solid var(--renk-kenar);
+    border-radius: 12px;
+    box-shadow: var(--golge-kart);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow var(--gecis-yavas), transform var(--gecis-yavas), grid-column var(--gecis-yavas);
+  }
+  .topluluk-kart:hover { box-shadow: var(--golge-kart-hover); transform: translateY(-2px); }
+
+  .topluluk-kart.genisletilmis {
+    grid-column: 1 / -1;
+    cursor: default;
+    transform: none;
+  }
+  .topluluk-kart.genisletilmis:hover { transform: none; }
+
+  /* Görsel her kartta aynı sabit yükseklikte; farklı boyuttaki görseller kırpılarak (object-fit: cover) eşitlenir */
+  .tk-gorsel {
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(135deg, var(--renk-lacivert) 0%, var(--renk-lacivert-acik) 100%) center/cover no-repeat;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.85);
+    font-family: var(--font-baslik);
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .tk-gorsel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .topluluk-kart.genisletilmis .tk-gorsel { height: 200px; }
+
+  .tk-govde { padding: 13px 15px; display: flex; flex-direction: column; gap: 7px; flex: 1; }
+  .topluluk-kart.genisletilmis .tk-govde { padding: 20px 24px; }
+
+  .tk-baslik-satiri { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .topluluk-kart h3 { margin: 0; font-family: var(--font-baslik); font-size: 14.5px; color: var(--renk-lacivert); }
+  .tk-daralt-ipucu { font-size: 10px; color: var(--renk-metin-soluk); white-space: nowrap; margin-top: 3px; }
+
+  .topluluk-kart p.tk-kisa-aciklama {
+    margin: 0; font-size: 12px; color: var(--renk-metin-soluk); line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .topluluk-kart .alt-bilgi { font-size: 11px; color: var(--renk-metin-soluk); }
+  .topluluk-kart .eylem { margin-top: 2px; }
+
+  /* Genişletildiğinde açılan detay alanı */
+  .tk-detay {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height var(--gecis-yavas), opacity var(--gecis-yavas), margin var(--gecis-yavas);
+  }
+  .topluluk-kart.genisletilmis .tk-detay {
+    max-height: 1200px;
+    opacity: 1;
+    margin-top: 6px;
+  }
+  .tk-detay-icerik {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    border-top: 1px solid var(--renk-kenar);
+    padding-top: 16px;
+  }
+  @media (max-width: 700px) { .tk-detay-icerik { grid-template-columns: 1fr; } }
+  .tk-detay-baslik { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.4px; font-weight: 700; color: var(--renk-metin-soluk); margin: 0 0 8px; }
+  .tk-detay-metin { font-size: 13.5px; line-height: 1.7; color: var(--renk-metin); white-space: pre-line; }
+  .tk-iletisim-satir { font-size: 13px; margin: 0 0 6px; }
+  .tk-iletisim-satir strong { color: var(--renk-metin); }
+
+  /* Kurumsal onay formu (üyelik başvuru / ayrılma) */
+  .kurumsal-baslik-bloku {
+    text-align: center;
+    border-bottom: 2px solid var(--renk-lacivert);
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+  }
+  .kurumsal-baslik-bloku .kb-kurum { font-family: var(--font-baslik); font-size: 13.5px; font-weight: 700; color: var(--renk-lacivert); letter-spacing: 0.3px; text-transform: uppercase; }
+  .kurumsal-baslik-bloku .kb-form-adi { font-size: 11.5px; color: var(--renk-metin-soluk); margin-top: 4px; letter-spacing: 0.4px; text-transform: uppercase; }
+
+  .kurumsal-metin-kutu {
+    max-height: 260px;
+    overflow-y: auto;
+    border: 1.5px solid var(--renk-kenar);
+    border-radius: 8px;
+    padding: 14px 16px;
+    background: var(--renk-zemin);
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--renk-metin);
+    white-space: pre-line;
+  }
+
+  .onay-satiri {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-top: 14px;
+    padding: 10px 12px;
+    background: var(--renk-zemin);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--renk-metin);
+  }
+  .onay-satiri input[type="checkbox"] { margin-top: 2px; width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="duzen">
+
+  <aside class="kenar-cubugu">
+    <div class="kc-ust-satir">
+      <div class="kc-marka">
+        <div class="kc-logo"><img src="../assets/mtu-logo.png" alt="Malatya Turgut Özal Üniversitesi Logosu"></div>
+        <div class="kc-marka-metin">
+          <div class="kc-marka-baslik">Topluluk Otomasyonu</div>
+          <div class="kc-marka-alt">Öğrenci Paneli</div>
+        </div>
+      </div>
+      <button class="kc-daralt-btn" id="kcDaraltBtn" title="Menüyü daralt / genişlet">&#9776;</button>
+    </div>
+
+    <ul class="kc-menu">
+      <li><a href="dashboard.html" data-sayfa="dashboard"><span class="ikon">&#9632;</span><span>Kontrol Paneli</span></a></li>
+      <li><a href="topluluklar.html" data-sayfa="topluluklar"><span class="ikon">&#127970;</span><span>Toplulukları Keşfet</span></a></li>
+    </ul>
+
+    <div class="kc-alt">
+      <div class="kc-kullanici">Hoş geldiniz,<strong id="kcKullaniciAdi">Öğrenci</strong></div>
+      <button class="kc-cikis" id="kcCikisBtn"><span class="ikon-cikis">&#9211;</span><span class="metin">Çıkış Yap</span></button>
+    </div>
+  </aside>
+
+  <main class="ana-icerik">
+    <div class="sayfa-baslik-satiri">
+      <div>
+        <h1 class="sayfa-baslik">Toplulukları Keşfet</h1>
+        <p class="sayfa-alt-baslik">Üniversitedeki onaylı topluluklara göz atın ve üyelik başvurusu yapın.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="arac-cubugu">
+        <input type="text" id="aramaKutusu" placeholder="Topluluk adına göre ara...">
+      </div>
+    </div>
+
+    <div class="topluluk-izgara" id="topluluklarIzgara">
+      <div class="yukleniyor-metni">Topluluklar yükleniyor...</div>
+    </div>
+  </main>
+
+</div>
+
+<!-- Kurumsal onay formu (üyelik başvurusu / üyelikten ayrılma) -->
+<div class="modal-arka" id="onayModalArka">
+  <div class="modal-kutu" style="max-width: 560px;">
+    <div class="modal-baslik-satiri">
+      <h3 class="modal-baslik" id="onayModalBaslik">Onay Formu</h3>
+      <button class="modal-kapat" onclick="onayModalKapat()">&times;</button>
+    </div>
+
+    <div class="kurumsal-baslik-bloku">
+      <div class="kb-kurum">Malatya Turgut Özal Üniversitesi</div>
+      <div class="kb-form-adi" id="onayModalFormAdi">Öğrenci Toplulukları Formu</div>
+    </div>
+
+    <div class="kurumsal-metin-kutu" id="onayModalMetin"></div>
+
+    <label class="onay-satiri" for="onayCheckbox">
+      <input type="checkbox" id="onayCheckbox" onchange="onayButonDurumu()">
+      <span>Yukarıdaki metni okudum, anladım ve onaylıyorum.</span>
+    </label>
+
+    <div class="modal-eylemler">
+      <button class="btn btn-ikincil" onclick="onayModalKapat()">Vazgeç</button>
+      <button class="btn btn-birincil" id="onayOnaylaBtn" disabled onclick="onayModalOnayla()">Onayla ve Devam Et</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/ortak.js"></script>
+<script src="js/topluluklar.js"></script>
+</body>
+</html>

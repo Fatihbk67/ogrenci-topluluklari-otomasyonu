@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontrol Paneli | Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<div class="duzen">
+
+  <!-- KENAR ÇUBUĞU -->
+  <aside class="kenar-cubugu">
+    <div class="kc-ust-satir">
+      <div class="kc-marka">
+        <div class="kc-logo"><img src="../assets/mtu-logo.png" alt="Malatya Turgut Özal Üniversitesi Logosu"></div>
+        <div class="kc-marka-metin">
+          <div class="kc-marka-baslik">Topluluk Otomasyonu</div>
+          <div class="kc-marka-alt">Yönetici Paneli</div>
+        </div>
+      </div>
+      <button class="kc-daralt-btn" id="kcDaraltBtn" title="Menüyü daralt / genişlet">&#9776;</button>
+    </div>
+
+    <ul class="kc-menu">
+      <li><a href="dashboard.html" data-sayfa="dashboard"><span class="ikon">&#9632;</span><span>Kontrol Paneli</span></a></li>
+      <li><a href="kullanicilar.html" data-sayfa="kullanicilar"><span class="ikon">&#128100;</span><span>Kullanıcılar</span></a></li>
+      <li><a href="topluluklar.html" data-sayfa="topluluklar"><span class="ikon">&#127970;</span><span>Topluluklar</span></a></li>
+      <li><a href="etkinlikler.html" data-sayfa="etkinlikler"><span class="ikon">&#128197;</span><span>Etkinlikler</span></a></li>
+      <li><a href="log-kayitlari.html" data-sayfa="log-kayitlari"><span class="ikon">&#128203;</span><span>Log Kaydı</span></a></li>
+    </ul>
+
+    <div class="kc-alt">
+      <div class="kc-kullanici">Hoş geldiniz,<strong id="kcKullaniciAdi">Yönetici</strong></div>
+      <button class="kc-cikis" id="kcCikisBtn"><span class="ikon-cikis">&#9211;</span><span class="metin">Çıkış Yap</span></button>
+    </div>
+  </aside>
+
+  <!-- ANA İÇERİK -->
+  <main class="ana-icerik">
+    <div class="kimlik-bar">
+      <div class="kimlik-sol">
+        <div class="kimlik-avatar" id="kimlikAvatar">--</div>
+        <div class="kimlik-metin">
+          <div class="kimlik-selamlama">Hoş geldiniz</div>
+          <div class="kimlik-ad" id="kimlikAd">Yönetici</div>
+        </div>
+      </div>
+      <span class="kimlik-rol-etiket" id="kimlikRol">Yönetici Paneli</span>
+    </div>
+
+    <div class="sayfa-baslik-satiri">
+      <div>
+        <h1 class="sayfa-baslik">Kontrol Paneli</h1>
+        <p class="sayfa-alt-baslik">Sistem geneline hızlı bir bakış.</p>
+      </div>
+    </div>
+
+    <div class="istatistik-izgara ist-5-kart" id="istatistikIzgara">
+      <div class="yukleniyor-metni">İstatistikler yükleniyor...</div>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-baslik">Son Kayıt Olan Kullanıcılar</h2>
+      <div class="tablo-sarici">
+        <table class="veri-tablo">
+          <thead>
+            <tr><th>Ad Soyad</th><th>E-posta</th><th>Rol</th><th>Kayıt Tarihi</th></tr>
+          </thead>
+          <tbody id="sonKullanicilarGovde">
+            <tr class="bos-satir"><td colspan="4">Yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-baslik">Son Oluşturulan Topluluklar</h2>
+      <div class="tablo-sarici">
+        <table class="veri-tablo">
+          <thead>
+            <tr><th>Topluluk Adı</th><th>Durum</th><th>Kuruluş Tarihi</th></tr>
+          </thead>
+          <tbody id="sonTopluluklarGovde">
+            <tr class="bos-satir"><td colspan="3">Yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script src="js/ortak.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

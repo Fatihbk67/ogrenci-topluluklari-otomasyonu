@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontrol Paneli | Topluluk Başkanı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/baskan.css">
+</head>
+<body>
+
+<div class="duzen">
+
+  <aside class="kenar-cubugu">
+    <div class="kc-ust-satir">
+      <div class="kc-marka">
+        <div class="kc-logo"><img src="../assets/mtu-logo.png" alt="Malatya Turgut Özal Üniversitesi Logosu"></div>
+        <div class="kc-marka-metin">
+          <div class="kc-marka-baslik">Topluluk Otomasyonu</div>
+          <div class="kc-marka-alt">Başkan Paneli</div>
+        </div>
+      </div>
+      <button class="kc-daralt-btn" id="kcDaraltBtn" title="Menüyü daralt / genişlet">&#9776;</button>
+    </div>
+
+    <ul class="kc-menu">
+      <li><a href="dashboard.html" data-sayfa="dashboard"><span class="ikon">&#9632;</span><span>Kontrol Paneli</span></a></li>
+      <li><a href="uyeler.html" data-sayfa="uyeler"><span class="ikon">&#128101;</span><span>Üyelik Başvuruları</span></a></li>
+      <li><a href="etkinlikler.html" data-sayfa="etkinlikler"><span class="ikon">&#128197;</span><span>Etkinliklerim</span></a></li>
+      <li><a href="topluluk-profili.html" data-sayfa="topluluk-profili"><span class="ikon">&#128196;</span><span>Topluluk Profilim</span></a></li>
+    </ul>
+
+    <div class="kc-alt">
+      <div class="kc-kullanici">Hoş geldiniz,<strong id="kcKullaniciAdi">Başkan</strong></div>
+      <button class="kc-cikis" id="kcCikisBtn"><span class="ikon-cikis">&#9211;</span><span class="metin">Çıkış Yap</span></button>
+    </div>
+  </aside>
+
+  <main class="ana-icerik">
+    <div class="sayfa-baslik-satiri">
+      <div>
+        <h1 class="sayfa-baslik">Kontrol Paneli</h1>
+        <p class="sayfa-alt-baslik" id="topluluqAltBaslik">Topluluğunuza hızlı bir bakış.</p>
+      </div>
+    </div>
+
+    <div class="panel" id="topluluqBilgiPanel" style="display:none;">
+      <h2 class="panel-baslik">Topluluk Bilgileri</h2>
+      <p style="font-size:13.5px; color:var(--renk-metin-soluk); line-height:1.7; margin:0 0 10px;" id="topluluqAciklama"></p>
+      <p style="font-size:13px; margin:0;"><strong>Danışman:</strong> <span id="topluluqDanisman">-</span></p>
+    </div>
+
+    <div class="istatistik-izgara" id="istatistikIzgara">
+      <div class="yukleniyor-metni">İstatistikler yükleniyor...</div>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-baslik">Son Üyelik Başvuruları</h2>
+      <div class="tablo-sarici">
+        <table class="veri-tablo">
+          <thead>
+            <tr><th>Öğrenci</th><th>E-posta</th><th>Durum</th><th>Başvuru Tarihi</th></tr>
+          </thead>
+          <tbody id="sonBasvurularGovde">
+            <tr class="bos-satir"><td colspan="4">Yükleniyor...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script src="js/ortak.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
